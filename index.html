@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anki Review Companion</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>Anki Review Companion</h1>
+        <p>Sign in with your AnkiWeb credentials, sync your cards, then run temporary randomized study sessions.</p>
+      </header>
+
+      <section class="panel" aria-labelledby="auth-heading">
+        <h2 id="auth-heading">1) Connect to AnkiWeb</h2>
+        <div class="filters">
+          <label>
+            Backend URL
+            <input id="backend-url" type="url" placeholder="http://localhost:4173" />
+          </label>
+          <label>
+            AnkiWeb Email
+            <input id="anki-email" type="email" autocomplete="username" placeholder="you@example.com" />
+          </label>
+          <label>
+            AnkiWeb Password
+            <input id="anki-password" type="password" autocomplete="current-password" placeholder="Password" />
+          </label>
+          <label>
+            Optional deck name filter during sync
+            <input id="sync-deck-filter" type="text" placeholder="Leave blank for all decks" />
+          </label>
+        </div>
+
+        <div class="row">
+          <button id="check-backend" class="button secondary" type="button">Check backend</button>
+          <button id="sync-anki" class="button" type="button">Sync cards from AnkiWeb</button>
+          <label for="file-input" class="button secondary">Import JSON backup</label>
+          <input id="file-input" type="file" accept="application/json" />
+        </div>
+        <p id="load-status" class="muted" aria-live="polite"></p>
+      </section>
+
+      <section class="panel" aria-labelledby="study-heading">
+        <h2 id="study-heading">2) Build Temporary Study Set</h2>
+        <div class="filters">
+          <label>
+            Deck
+            <select id="deck-filter"><option value="">All decks</option></select>
+          </label>
+          <label>
+            Tag
+            <select id="tag-filter"><option value="">All tags</option></select>
+          </label>
+          <label>
+            Max cards
+            <input id="max-cards" type="number" min="1" placeholder="No limit" />
+          </label>
+          <label class="inline-toggle">
+            <input id="randomize-toggle" type="checkbox" checked />
+            Randomize order
+          </label>
+        </div>
+        <div class="row">
+          <button id="create-session" class="button" type="button">Create one-off session</button>
+          <button id="reset-session" class="button ghost" type="button">Reset</button>
+        </div>
+        <p id="session-status" class="muted" aria-live="polite"></p>
+      </section>
+
+      <section class="panel hidden" id="review-panel" aria-labelledby="review-heading">
+        <h2 id="review-heading">3) Review</h2>
+        <div class="progress">
+          <span id="progress-text"></span>
+          <progress id="progress-bar" value="0" max="100"></progress>
+        </div>
+        <article class="card" aria-live="polite">
+          <h3 id="card-deck"></h3>
+          <p id="card-tags"></p>
+          <div class="card-face" id="card-front"></div>
+          <div class="card-face hidden" id="card-back"></div>
+        </article>
+        <div class="row">
+          <button id="show-answer" class="button" type="button">Show Answer</button>
+          <button id="mark-again" class="button ghost" type="button">Again</button>
+          <button id="mark-good" class="button" type="button">Good</button>
+        </div>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
