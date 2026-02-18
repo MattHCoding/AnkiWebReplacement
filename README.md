@@ -37,3 +37,4 @@ npm start
 - This uses UI automation against AnkiWeb and depends on AnkiWeb page structure.
 - If AnkiWeb changes their export page, selectors in `server.js` may need updates.
 - If direct sync fails for any reason, you can still use JSON import as a fallback.
+- If you see `Unexpected token "<"` during sync, you are likely serving only static files. Run with `npm start` so `/api/sync` is available.

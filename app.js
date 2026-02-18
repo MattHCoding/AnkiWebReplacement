@@ -137,6 +137,21 @@ function moveToNextCard(requeue) {
   renderCard();
 }
 
+async function readJsonResponse(response) {
+  const rawBody = await response.text();
+  try {
+    return JSON.parse(rawBody || '{}');
+  } catch {
+    const startsLikeHtml = rawBody.trim().startsWith('<');
+    if (startsLikeHtml) {
+      throw new Error(
+        'Received HTML instead of API JSON. Start the app with "npm start" (not a static file server), then retry sync.'
+      );
+    }
+    throw new Error('Sync service returned an invalid response.');
+  }
+}
+
 async function syncFromAnkiWeb() {
   const email = elements.email.value.trim();
   const password = elements.password.value;
@@ -159,7 +174,7 @@ async function syncFromAnkiWeb() {
       }),
     });
 
-    const payload = await response.json();
+    const payload = await readJsonResponse(response);
     if (!response.ok) throw new Error(payload.error || 'Sync failed.');
     loadCards(payload.cards);
     elements.loadStatus.textContent = `Synced ${payload.cards.length} cards from AnkiWeb.`;
