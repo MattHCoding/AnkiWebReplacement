@@ -1,0 +1,140 @@
+:root {
+  color-scheme: dark;
+  --bg: #10131b;
+  --panel: #1a2030;
+  --text: #e8ecf2;
+  --muted: #9cabbe;
+  --accent: #66b4ff;
+  --border: #2c3850;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+.panel {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--panel);
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.92rem;
+}
+
+.inline-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.45rem;
+}
+
+select,
+input[type='number'] {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 0.5rem;
+  background: #0e1422;
+  color: var(--text);
+}
+
+.button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: var(--accent);
+  color: #001123;
+  font-weight: 600;
+  padding: 0.55rem 0.85rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.button.secondary,
+.button.ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+input[type='file'] {
+  display: none;
+}
+
+.muted {
+  margin-top: 0.75rem;
+  color: var(--muted);
+}
+
+.hidden {
+  display: none;
+}
+
+.card {
+  margin: 1rem 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  min-height: 230px;
+}
+
+.card-face {
+  margin-top: 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  padding: 1rem;
+  background: #0e1422;
+  white-space: pre-wrap;
+}
+
+#card-back {
+  border-color: #39618f;
+}
+
+progress {
+  width: 100%;
+  margin-top: 0.4rem;
+}

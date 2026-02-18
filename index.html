@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anki Review Companion</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>Anki Review Companion</h1>
+        <p>
+          Review cards with randomized order and create temporary custom study sessions from your
+          existing notes.
+        </p>
+      </header>
+
+      <section class="panel" aria-labelledby="import-heading">
+        <h2 id="import-heading">1) Load Cards</h2>
+        <p>
+          Import a JSON file exported from your notes. Expected shape:
+          <code>[{ "id": "1", "front": "...", "back": "...", "deck": "...", "tags": ["..."] }]</code>
+        </p>
+        <div class="row">
+          <label for="file-input" class="button secondary">Import JSON</label>
+          <input id="file-input" type="file" accept="application/json" />
+          <button id="load-sample" class="button secondary" type="button">Load sample cards</button>
+        </div>
+        <p id="load-status" class="muted" aria-live="polite"></p>
+      </section>
+
+      <section class="panel" aria-labelledby="study-heading">
+        <h2 id="study-heading">2) Build Temporary Study Set</h2>
+        <div class="filters">
+          <label>
+            Deck
+            <select id="deck-filter">
+              <option value="">All decks</option>
+            </select>
+          </label>
+
+          <label>
+            Tag
+            <select id="tag-filter">
+              <option value="">All tags</option>
+            </select>
+          </label>
+
+          <label>
+            Max cards
+            <input id="max-cards" type="number" min="1" placeholder="No limit" />
+          </label>
+
+          <label class="inline-toggle">
+            <input id="randomize-toggle" type="checkbox" checked />
+            Randomize order
+          </label>
+        </div>
+
+        <div class="row">
+          <button id="create-session" class="button" type="button">Create one-off session</button>
+          <button id="reset-session" class="button ghost" type="button">Reset</button>
+        </div>
+        <p id="session-status" class="muted" aria-live="polite"></p>
+      </section>
+
+      <section class="panel hidden" id="review-panel" aria-labelledby="review-heading">
+        <h2 id="review-heading">3) Review</h2>
+        <div class="progress">
+          <span id="progress-text"></span>
+          <progress id="progress-bar" value="0" max="100"></progress>
+        </div>
+
+        <article class="card" aria-live="polite">
+          <h3 id="card-deck"></h3>
+          <p id="card-tags"></p>
+          <div class="card-face" id="card-front"></div>
+          <div class="card-face hidden" id="card-back"></div>
+        </article>
+
+        <div class="row">
+          <button id="show-answer" class="button" type="button">Show Answer</button>
+          <button id="mark-again" class="button ghost" type="button">Again</button>
+          <button id="mark-good" class="button" type="button">Good</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
