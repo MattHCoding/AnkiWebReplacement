@@ -17,6 +17,10 @@
         <h2 id="auth-heading">1) Connect to AnkiWeb</h2>
         <div class="filters">
           <label>
+            Backend URL
+            <input id="backend-url" type="url" placeholder="http://localhost:4173" />
+          </label>
+          <label>
             AnkiWeb Email
             <input id="anki-email" type="email" autocomplete="username" placeholder="you@example.com" />
           </label>
@@ -31,6 +35,7 @@
         </div>
 
         <div class="row">
+          <button id="check-backend" class="button secondary" type="button">Check backend</button>
           <button id="sync-anki" class="button" type="button">Sync cards from AnkiWeb</button>
           <label for="file-input" class="button secondary">Import JSON backup</label>
           <input id="file-input" type="file" accept="application/json" />

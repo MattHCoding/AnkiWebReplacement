@@ -164,6 +164,9 @@ async function handleSync(req, res) {
 }
 
 const server = http.createServer(async (req, res) => {
+  if (req.method === 'GET' && req.url === '/api/health') {
+    return sendJson(res, 200, { ok: true, baseUrl: `http://${HOST}:${PORT}` });
+  }
   if (req.method === 'POST' && req.url === '/api/sync') return handleSync(req, res);
   if (req.method === 'GET') return serveStatic(req, res);
   return sendJson(res, 405, { error: 'Method not allowed' });

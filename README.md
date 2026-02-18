@@ -26,6 +26,8 @@ npm start
 
 3. Open <http://localhost:4173>.
 
+If your frontend is hosted separately, set **Backend URL** in the app to the machine running `npm start`.
+
 ## Credential handling
 
 - Credentials are sent only to your local server endpoint (`/api/sync`) for the login operation.
@@ -37,4 +39,5 @@ npm start
 - This uses UI automation against AnkiWeb and depends on AnkiWeb page structure.
 - If AnkiWeb changes their export page, selectors in `server.js` may need updates.
 - If direct sync fails for any reason, you can still use JSON import as a fallback.
-- If you see `Unexpected token "<"` during sync, you are likely serving only static files. Run with `npm start` so `/api/sync` is available.
+- If sync says it received HTML instead of JSON, the frontend is pointing at a static server instead of the API server. Use **Backend URL** and set it to where `npm start` is running.
+- Use **Check backend** in the UI to verify `/api/health` before syncing credentials.

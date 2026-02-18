@@ -6,6 +6,8 @@ const state = {
 };
 
 const elements = {
+  backendUrl: document.querySelector('#backend-url'),
+  checkBackend: document.querySelector('#check-backend'),
   email: document.querySelector('#anki-email'),
   password: document.querySelector('#anki-password'),
   syncDeckFilter: document.querySelector('#sync-deck-filter'),
@@ -137,6 +139,21 @@ function moveToNextCard(requeue) {
   renderCard();
 }
 
+function getBackendBaseUrl() {
+  const rawInput = elements.backendUrl.value.trim();
+  const candidate = rawInput || window.location.origin;
+  try {
+    const normalized = new URL(candidate).origin;
+    return normalized;
+  } catch {
+    throw new Error('Backend URL is invalid. Example: http://localhost:4173');
+  }
+}
+
+function getApiUrl(path) {
+  return `${getBackendBaseUrl()}${path}`;
+}
+
 async function readJsonResponse(response) {
   const rawBody = await response.text();
   try {
@@ -145,10 +162,24 @@ async function readJsonResponse(response) {
     const startsLikeHtml = rawBody.trim().startsWith('<');
     if (startsLikeHtml) {
       throw new Error(
-        'Received HTML instead of API JSON. Start the app with "npm start" (not a static file server), then retry sync.'
+        'Received HTML instead of API JSON. Point "Backend URL" to the server running npm start (for example http://localhost:4173).'
       );
     }
     throw new Error('Sync service returned an invalid response.');
+  }
+}
+
+async function checkBackendHealth() {
+  elements.checkBackend.disabled = true;
+  try {
+    const response = await fetch(getApiUrl('/api/health'));
+    const payload = await readJsonResponse(response);
+    if (!response.ok) throw new Error(payload.error || 'Backend health check failed.');
+    elements.loadStatus.textContent = `Backend reachable at ${payload.baseUrl || getBackendBaseUrl()}.`;
+  } catch (error) {
+    elements.loadStatus.textContent = `Backend check failed: ${error.message}`;
+  } finally {
+    elements.checkBackend.disabled = false;
   }
 }
 
@@ -164,7 +195,7 @@ async function syncFromAnkiWeb() {
   elements.loadStatus.textContent = 'Sync in progress...';
 
   try {
-    const response = await fetch('/api/sync', {
+    const response = await fetch(getApiUrl('/api/sync'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -198,6 +229,8 @@ elements.fileInput.addEventListener('change', async (event) => {
   }
 });
 
+elements.backendUrl.value = window.location.origin;
+elements.checkBackend.addEventListener('click', checkBackendHealth);
 elements.syncAnki.addEventListener('click', syncFromAnkiWeb);
 elements.createSession.addEventListener('click', createTemporarySession);
 elements.resetSession.addEventListener('click', resetSession);
@@ -207,3 +240,5 @@ elements.showAnswer.addEventListener('click', () => {
 });
 elements.markAgain.addEventListener('click', () => moveToNextCard(true));
 elements.markGood.addEventListener('click', () => moveToNextCard(false));
+
+checkBackendHealth();
