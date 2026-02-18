@@ -1,31 +1,39 @@
 # Anki Review Companion
 
-A lightweight website for reviewing Anki-style cards with two gaps filled:
+This web app connects to **AnkiWeb using your credentials**, downloads an export, and gives you:
 
-- Randomized review order
-- One-off (temporary) custom study sets
+- Randomized card order
+- One-off / temporary custom study sessions
 
-## What it does
+## Why this version
 
-- Loads cards from JSON export (`front`, `back`, `deck`, `tags`, `id` fields)
-- Lets you filter by deck/tag and optionally cap max card count
-- Creates an ephemeral session (no permanent rescheduling changes)
-- Supports **Again** (re-queues card) and **Good** (moves on)
+You mentioned you cannot install Anki on your work computer and prefer credential-based access. This app is built for that: it signs into AnkiWeb and syncs cards directly through automated browser export.
 
 ## Run locally
 
+1. Install dependencies:
+
 ```bash
-python3 -m http.server 4173
+npm install
+npx playwright install chromium
 ```
 
-Then open <http://localhost:4173>.
+2. Start the app:
 
-## Note on Anki login
+```bash
+npm start
+```
 
-This implementation does **not** require your login credentials. It is designed around importing exported card JSON so your password stays private.
+3. Open <http://localhost:4173>.
 
-If you later want direct sync with your Anki collection, the usual secure approach is:
+## Credential handling
 
-1. Run a local connector (e.g., AnkiConnect) on your own machine.
-2. Have this web app talk to the local API.
-3. Avoid sharing credentials directly with any hosted service.
+- Credentials are sent only to your local server endpoint (`/api/sync`) for the login operation.
+- Credentials are **not persisted** to disk by this app.
+- Synced cards are kept in browser memory for your current session.
+
+## Notes
+
+- This uses UI automation against AnkiWeb and depends on AnkiWeb page structure.
+- If AnkiWeb changes their export page, selectors in `server.js` may need updates.
+- If direct sync fails for any reason, you can still use JSON import as a fallback.

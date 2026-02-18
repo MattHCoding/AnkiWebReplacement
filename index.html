@@ -10,22 +10,30 @@
     <main class="container">
       <header>
         <h1>Anki Review Companion</h1>
-        <p>
-          Review cards with randomized order and create temporary custom study sessions from your
-          existing notes.
-        </p>
+        <p>Sign in with your AnkiWeb credentials, sync your cards, then run temporary randomized study sessions.</p>
       </header>
 
-      <section class="panel" aria-labelledby="import-heading">
-        <h2 id="import-heading">1) Load Cards</h2>
-        <p>
-          Import a JSON file exported from your notes. Expected shape:
-          <code>[{ "id": "1", "front": "...", "back": "...", "deck": "...", "tags": ["..."] }]</code>
-        </p>
+      <section class="panel" aria-labelledby="auth-heading">
+        <h2 id="auth-heading">1) Connect to AnkiWeb</h2>
+        <div class="filters">
+          <label>
+            AnkiWeb Email
+            <input id="anki-email" type="email" autocomplete="username" placeholder="you@example.com" />
+          </label>
+          <label>
+            AnkiWeb Password
+            <input id="anki-password" type="password" autocomplete="current-password" placeholder="Password" />
+          </label>
+          <label>
+            Optional deck name filter during sync
+            <input id="sync-deck-filter" type="text" placeholder="Leave blank for all decks" />
+          </label>
+        </div>
+
         <div class="row">
-          <label for="file-input" class="button secondary">Import JSON</label>
+          <button id="sync-anki" class="button" type="button">Sync cards from AnkiWeb</button>
+          <label for="file-input" class="button secondary">Import JSON backup</label>
           <input id="file-input" type="file" accept="application/json" />
-          <button id="load-sample" class="button secondary" type="button">Load sample cards</button>
         </div>
         <p id="load-status" class="muted" aria-live="polite"></p>
       </section>
@@ -35,29 +43,21 @@
         <div class="filters">
           <label>
             Deck
-            <select id="deck-filter">
-              <option value="">All decks</option>
-            </select>
+            <select id="deck-filter"><option value="">All decks</option></select>
           </label>
-
           <label>
             Tag
-            <select id="tag-filter">
-              <option value="">All tags</option>
-            </select>
+            <select id="tag-filter"><option value="">All tags</option></select>
           </label>
-
           <label>
             Max cards
             <input id="max-cards" type="number" min="1" placeholder="No limit" />
           </label>
-
           <label class="inline-toggle">
             <input id="randomize-toggle" type="checkbox" checked />
             Randomize order
           </label>
         </div>
-
         <div class="row">
           <button id="create-session" class="button" type="button">Create one-off session</button>
           <button id="reset-session" class="button ghost" type="button">Reset</button>
@@ -71,14 +71,12 @@
           <span id="progress-text"></span>
           <progress id="progress-bar" value="0" max="100"></progress>
         </div>
-
         <article class="card" aria-live="polite">
           <h3 id="card-deck"></h3>
           <p id="card-tags"></p>
           <div class="card-face" id="card-front"></div>
           <div class="card-face hidden" id="card-back"></div>
         </article>
-
         <div class="row">
           <button id="show-answer" class="button" type="button">Show Answer</button>
           <button id="mark-again" class="button ghost" type="button">Again</button>
@@ -86,7 +84,6 @@
         </div>
       </section>
     </main>
-
     <script src="app.js"></script>
   </body>
 </html>

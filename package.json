@@ -1,0 +1,14 @@
+{
+  "name": "anki-review-companion",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Credential-based AnkiWeb review companion with random and one-off sessions",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check app.js"
+  },
+  "dependencies": {
+    "playwright": "^1.51.0"
+  }
+}
